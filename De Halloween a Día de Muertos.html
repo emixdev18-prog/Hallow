@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De Halloween a Día de Muertos 🎃🌼</title>
+<style>
+  :root { --ink:#fff8ed; --gold:#ffd166; --orange:#ff7b35; --purple:#a78bfa; --pink:#ff78a8; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; min-height:100vh; color:var(--ink);
+    font-family: "Trebuchet MS", system-ui, sans-serif;
+    background:#100d20; overflow-x:hidden;
+  }
+  .scene {
+    min-height:100vh; display:grid; place-items:center; padding:38px 18px;
+    position:relative; isolation:isolate; overflow:hidden;
+  }
+  .halloween {
+    background: radial-gradient(circle at 50% 15%, #44215e 0, #1b1230 42%, #090b19 100%);
+  }
+  .halloween::before {
+    content:""; position:absolute; inset:0; z-index:-1; opacity:.35;
+    background-image: radial-gradient(#fff 1px, transparent 1px);
+    background-size:42px 42px;
+  }
+  .moon {
+    position:absolute; top:8%; right:12%; width:100px; height:100px;
+    border-radius:50%; background:#fff0c2; box-shadow:0 0 55px #ffd16688;
+  }
+  .moon::after {
+    content:""; position:absolute; width:92px; height:92px; border-radius:50%;
+    background:#25163b; left:27px; top:-10px;
+  }
+  .card {
+    width:min(760px, 100%); text-align:center; padding:clamp(26px,6vw,58px);
+    border:1px solid #ffffff2b; border-radius:30px;
+    background:#160f28cc; box-shadow:0 24px 80px #0008; backdrop-filter:blur(8px);
+  }
+  .eyebrow { letter-spacing:.22em; text-transform:uppercase; font-size:.78rem; color:#ffca82; }
+  h1 { font-size:clamp(2.3rem,7vw,5rem); line-height:1.02; margin:16px 0; }
+  h2 { font-size:clamp(2rem,5vw,3.6rem); margin:12px 0; line-height:1.05; }
+  p { font-size:clamp(1rem,2.4vw,1.2rem); line-height:1.75; color:#f7e9df; }
+  .pumpkins { font-size:clamp(2.4rem,7vw,4.5rem); letter-spacing:.1em; margin:22px 0; }
+  button {
+    border:0; border-radius:999px; padding:15px 27px; margin-top:18px;
+    background:linear-gradient(100deg,#ff8a3d,#ffbf69); color:#2b1424;
+    font-size:1rem; font-weight:800; cursor:pointer; box-shadow:0 8px 25px #ff8a3d55;
+    transition:transform .2s, box-shadow .2s;
+  }
+  button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 30px #ff8a3d77; }
+  .hint { color:#c8b6d9; font-size:.88rem; margin-top:18px; }
+  .dead {
+    display:none;
+    background:radial-gradient(circle at 50% 20%,#7b244e 0,#401b48 42%,#17102c 100%);
+  }
+  .dead::before {
+    content:""; position:absolute; inset:0; z-index:-1; opacity:.23;
+    background:repeating-linear-gradient(90deg,transparent 0 45px,#ffd166 46px 48px,transparent 49px 90px);
+    mask-image:linear-gradient(to bottom,#000,transparent 75%);
+  }
+  .paper {
+    position:absolute; top:0; left:0; right:0; height:54px; display:flex; justify-content:space-around;
+    opacity:.95; pointer-events:none;
+  }
+  .paper span {
+    width:55px; height:44px; background:#ffcf55; clip-path:polygon(0 0,100% 0,100% 80%,50% 100%,0 80%);
+    position:relative;
+  }
+  .paper span:nth-child(3n+1){background:#ff6b6b}
+  .paper span:nth-child(3n+2){background:#6ee7b7}
+  .paper span:nth-child(3n){background:#a78bfa}
+  .paper span::after {content:"✿"; position:absolute; inset:7px 0 0; text-align:center; color:#53244d; font-size:20px}
+  .altar { font-size:clamp(2.5rem,7vw,4.5rem); margin:18px 0; filter:drop-shadow(0 5px 12px #ffb34766); }
+  .marigolds { color:#ffbd36; letter-spacing:.12em; font-size:1.6rem; margin:15px 0; }
+  .dedication {
+    border:1px solid #ffd16666; background:#2a123b99; border-radius:22px;
+    padding:20px 22px; margin:24px auto 8px; max-width:610px;
+  }
+  .signature { color:#ffd166; font-weight:800; margin-top:22px; }
+  .spark { position:absolute; font-size:1.5rem; animation:float 5s ease-in-out infinite; opacity:.8; }
+  .s1{left:8%;top:22%}.s2{right:8%;top:42%;animation-delay:1s}.s3{left:13%;bottom:13%;animation-delay:2s}.s4{right:14%;bottom:12%;animation-delay:3s}
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(-8deg)} 50%{transform:translateY(-18px) rotate(8deg)} }
+  .fade { animation:appear .9s ease both; }
+  @keyframes appear { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  footer { color:#d9c2dc; font-size:.82rem; margin-top:25px; }
+  .card { position:relative; z-index:1; }
+  .fx { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+  .fx i { position:absolute; left:0; top:0; font-style:normal; will-change:transform; filter:drop-shadow(0 4px 8px #0006); }
+  .fx .fall { animation:fall var(--d) linear forwards; }
+  .fx .bat { animation:fly var(--d) linear forwards; }
+  @keyframes fall { from{transform:translate3d(var(--x0),-12vh,0) rotate(0)} to{transform:translate3d(calc(var(--x0) + var(--dx)),112vh,0) rotate(var(--r))} }
+  @keyframes fly {
+    0%{transform:translate(-15vw,0) rotate(-12deg) scaleY(1)}
+    12%{transform:translate(8vw,calc(var(--y)*-1)) rotate(10deg) scaleY(.7)}
+    25%{transform:translate(25vw,var(--y)) rotate(-10deg) scaleY(1)}
+    37%{transform:translate(42vw,calc(var(--y)*-1)) rotate(10deg) scaleY(.7)}
+    50%{transform:translate(58vw,var(--y)) rotate(-10deg) scaleY(1)}
+    62%{transform:translate(72vw,calc(var(--y)*-1)) rotate(10deg) scaleY(.7)}
+    75%{transform:translate(88vw,var(--y)) rotate(-10deg) scaleY(1)}
+    100%{transform:translate(118vw,calc(var(--y)*-1)) rotate(10deg) scaleY(.8)}
+  }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important} }
+</style>
+</head>
+<body>
+<section class="scene halloween" id="halloween">
+  <div class="moon" aria-hidden="true"></div>
+  <div class="fx" id="fxH" aria-hidden="true"></div>
+  <span class="spark s1">✦</span><span class="spark s2">🦇</span>
+  <span class="spark s3">✧</span><span class="spark s4">🕸️</span>
+  <main class="card fade">
+    <div class="eyebrow">Una celebración está por comenzar</div>
+    <div class="pumpkins" aria-hidden="true">🎃 🕷️ 🦇</div>
+    <h1>¡Feliz Halloween!</h1>
+    <p>
+      Que esta noche esté llena de diversión, sustos de los buenos,
+      risas y muchas anécdotas para contar.
+    </p>
+    <p>Pero la celebración todavía no termina… 🇲🇽</p>
+    <button id="continueBtn" type="button">Descubrir la siguiente fiesta ✨</button>
+    <div class="hint">Psst… lo mejor viene con flores de cempasúchil.</div>
+  </main>
+</section>
+
+<section class="scene dead" id="diaMuertos">
+  <div class="paper" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="fx" id="fxD" aria-hidden="true"></div>
+  <span class="spark s1">🌼</span><span class="spark s2">🕯️</span>
+  <span class="spark s3">✨</span><span class="spark s4">🌼</span>
+  <main class="card fade">
+    <div class="eyebrow">1 y 2 de noviembre · Tradición mexicana</div>
+    <div class="altar" aria-hidden="true">💀 🌼 🕯️ 🌼 💀</div>
+    <h2>¡Feliz Día de Muertos!</h2>
+    <div class="marigolds">✿ ✿ ✿ CEMPASÚCHIL ✿ ✿ ✿</div>
+    <p>
+      Que estos días estén llenos de color, recuerdos bonitos,
+      unión familiar, comida deliciosa y momentos que se queden
+      guardados en el corazón.
+    </p>
+    <div class="dedication">
+      <p>
+        A mis amiguitos de Enfermería:
+        les deseo unas <strong>felices fiestas</strong>, que disfruten
+        mucho estas tradiciones tan nuestras, que nunca falten las
+        sonrisas, el pan de muerto y las buenas vibras.
+      </p>
+      <p>
+        Que la alegría de Halloween y la magia de nuestras tradiciones
+        mexicanas hagan de estos días algo especial.
+      </p>
+      <div class="signature">¡Con mucho cariño, felices fiestas! 🧡</div>
+    </div>
+    <div class="altar" aria-hidden="true">🌼 🧡 🕯️ 🧡 🌼</div>
+    <footer>Hecho con cariño para ustedes · Que viva México 🇲🇽</footer>
+    <button id="backBtn" type="button">Volver al inicio 🎃</button>
+  </main>
+</section>
+<script>
+  const halloween = document.getElementById('halloween');
+  const diaMuertos = document.getElementById('diaMuertos');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const R = (a, b) => a + Math.random() * (b - a);
+  const FLOR = (() => {
+    let p = '';
+    for (let i = 0; i < 14; i++) p += `<ellipse cx="50" cy="25" rx="11" ry="24" transform="rotate(${i * 360 / 14} 50 50)" fill="${i % 2 ? '#ff8a00' : '#ff6a00'}" stroke="#b84300" stroke-width="1.5"/>`;
+    for (let i = 0; i < 10; i++) p += `<ellipse cx="50" cy="34" rx="9" ry="15" transform="rotate(${i * 36 + 18} 50 50)" fill="#ffa01f" stroke="#c95100" stroke-width="1"/>`;
+    p += '<circle cx="50" cy="50" r="9" fill="#d84a00"/>';
+    return `<svg viewBox="0 0 100 100" width="1em" height="1em" style="display:inline-block;vertical-align:-.12em" aria-hidden="true">${p}</svg>`;
+  })();
+  document.querySelectorAll('#diaMuertos .spark, #diaMuertos .altar').forEach(e => { e.innerHTML = e.innerHTML.split('🌼').join(FLOR); });
+  let timers = [];
+  function spawn(layer, pool, bat) {
+    if (document.hidden) return;
+    const el = document.createElement('i'), s = el.style;
+    const ch = pool[Math.floor(Math.random() * pool.length)];
+    if (ch === 'F') el.innerHTML = FLOR; else el.textContent = ch;
+    s.fontSize = R(1.5, 3) + 'rem';
+    s.setProperty('--d', R(bat ? 8 : 6, bat ? 13 : 12) + 's');
+    if (bat) {
+      el.className = 'bat'; s.top = R(4, 65) + '%'; s.setProperty('--y', R(3, 14) + 'vh');
+    } else {
+      el.className = 'fall';
+      s.setProperty('--x0', R(0, 96) + 'vw'); s.setProperty('--dx', R(-12, 12) + 'vw');
+      s.setProperty('--r', R(-540, 540) + 'deg');
+    }
+    layer.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+  function run(which) {
+    timers.forEach(clearInterval); timers = [];
+    document.querySelectorAll('.fx').forEach(l => l.innerHTML = '');
+    if (reduce) return;
+    if (which === 'h') {
+      const L = document.getElementById('fxH');
+      for (let i = 0; i < 3; i++) spawn(L, ['🦇'], true);
+      timers.push(setInterval(() => spawn(L, ['🍬','🍭','🍫','🎃','🍬','🍭'], false), 380));
+      timers.push(setInterval(() => spawn(L, ['🦇'], true), 1700));
+    } else {
+      const L = document.getElementById('fxD');
+      const pool = ['F','F','F','F','💀','💀','💀','F','💀','🥃'];
+      for (let i = 0; i < 24; i++) { spawn(L, pool, false); L.lastChild.style.animationDelay = -R(0, 6) + 's'; }
+      timers.push(setInterval(() => spawn(L, pool, false), 140));
+    }
+  }
+  run('h');
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    halloween.style.display = 'none'; run('d');
+    diaMuertos.style.display = 'grid';
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+  document.getElementById('backBtn').addEventListener('click', () => {
+    diaMuertos.style.display = 'none'; run('h');
+    halloween.style.display = 'grid';
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
